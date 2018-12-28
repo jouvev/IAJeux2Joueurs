@@ -1,0 +1,59 @@
+********** semaine 28/02 au 07/03 **********
+- ajustements du alpha beta: 
+	> modification de alpha dès la profondeur 1
+	> fin de la partie renvoie -100 au lieu de 0 lors d'une égalité
+	
+- tentative d'amélioration de l'élagage alpha-beta (de l'AWELE uniquement) en triant 
+	la liste des coups valides (explorer les plus prometteurs en 
+	premier lors d'un MAX et les moins prometteurs lors d'un MIN)
+
+	> première tentative de tri:
+		trier en fonction de si un coup se finit dans le camps adverse après avoir été joué et du nb de graine qu'il y dépose
+		(car eventualité de manger le plus de graines).*
+		Resultats: methode fonctionnelle mais trop lente pour faire gagner du temps
+		
+def updateListe(jeu, listeCoups):
+    res = []
+    res2 = []
+    for c in listeCoups:
+        val = jeu[0][c[0]][c[1]]
+        nbG = ((val//12)+val)%12
+        if (c[0]==0):
+            nbG-=c[1]
+        else:
+            nbG-=(5-c[1])
+        res.append((nbG, c))
+
+    #fonction de tri par rapport à la première valeur de chaque tuple, plus grandes valeurs au debut
+    res = sorted(res, key=getKey, reverse=True)
+    size = len(res)
+    i = 0
+    #comme 6 est la plus grande valeur souhaitable
+    #(et on peut avoir des valeurs jusqu'à 11, alors on met les valeurs >6 à la fin)
+    while i<size:
+        if res[0][0]>6 or res[0][0]<=0:
+            res.append(res[0])
+            res.pop(0)
+        else:
+            break
+        i+=1
+    for (value, coup) in res:
+        res2.append(coup)
+    return res2
+
+def getKey(item):
+	return item[0]
+	
+	
+	> deuxième tentative:
+		trier en fonction du nb de graines
+		Resultats: fonctions plus rapide d'executions mais le nb de graines n'est pas spécialement prometteur pour 
+		la suite de l'élagage, donc aucun gains de temps
+		
+- tentative d'IA sur le principe negascout/negamax. non fonctionnel pour le moment
+
+- recherches sur l'algorithme monte-carlo et sur son utilité pour l'othello.
+	> d'après une étude (http://ro.ecu.edu.au/cgi/viewcontent.cgi?article=5969&context=ecuworks), 
+		il devient efficace (60% de win) contre un minmax profondeur 4 
+		avec une base de 7000 parties jouées par coups.
+		Ainsi, il n'est pas recommandé de l'utiliser pour un othello

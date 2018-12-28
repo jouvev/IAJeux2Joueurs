@@ -1,0 +1,18 @@
+********** semaine 07/03 au 14/03 **********
+
+Création du main_coefsFinder pour l'awele qui trouve les coefficients optimaux.
+coefficients retenus:
+[2, -1, 1]			#meilleur
+[2.5 , 0 , 2]
+[3, 0, 3]
+[2.5, 1, 2]
+
+Nous nous concentrons exclusivement sur l'othello car l'awele est terminé
+- tentative d'amélioration de la fonction d'évaluation car l'actuelle est trop longue
+	et donne peu de résultats concluants avec une profondeur supérieure à 1
+	
+	+ on cherche le nbr de pions avec une LIBERTE faible (ceux avec peu de cases vides autour)
+	+ on souhaite garder le masque qui affecte un poids aux cases
+	+ on travaille sur la PARITE
+	
+	Ici, le but et de reduire la mobilité de l'adversaire tout en prenant des points
